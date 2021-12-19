@@ -1,6 +1,11 @@
+import 'package:electronic_shop/core/services/login_services.dart';
+import 'package:electronic_shop/ui/pages/home_page/home_page.dart';
+import 'package:electronic_shop/ui/pages/splash_screen/splash_screen.dart';
 import 'package:electronic_shop/ui/styles/colors.dart';
+import 'package:electronic_shop/ui/widgets/error_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -31,7 +36,24 @@ class LoginPage extends StatelessWidget {
               height: height*0.08,
               width: width*0.9,
               child: OutlineButton.icon(
-                onPressed: () {},
+                onPressed: () async{
+                  var provider = Provider.of<LoginServices>(context, listen: false);
+                  final isLoading = await provider.googleSignInTo();
+
+                  if(isLoading)
+                    {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>HomePage()));
+                    }
+                  else{
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return errorWidgets(context, "Error", "Please try again");
+                        });
+                  }
+
+
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.google,
                   color: AppColors.textColor,

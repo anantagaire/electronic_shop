@@ -29,8 +29,9 @@ class Products{
   int? stockCount;
   String? date;
   String? price;
+  List<String>? category;
 
-  Products({this.name, this.image, this.stockCount, this.date, this.price});
+  Products({this.name, this.image, this.stockCount, this.date, this.price, this.category});
 
   factory Products.fromJson(Map<String, dynamic> parsedJson)
   {
@@ -45,6 +46,7 @@ class Products{
       stockCount: parsedJson['stock'],
       date: dateInFormat.substring(0,10),
       price: priceInRupee,
+      category: (parsedJson['category']).cast<String>()
     );
   }
 

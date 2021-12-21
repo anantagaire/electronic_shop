@@ -134,7 +134,7 @@ class _FilterPageState extends State<FilterPage> {
             _container('Descending', 1),
 
             Container(
-              padding: EdgeInsets.only(top: 30, left: 20, right: 20, ),
+              padding: EdgeInsets.only(top: 10, left: 20, right: 20, ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -28,7 +28,6 @@ class ProductPage extends StatelessWidget {
           {
             if(state.products==null)
               {
-                print(state.products);
                 return Center(child: CircularProgressIndicator(),);
               }
             else{

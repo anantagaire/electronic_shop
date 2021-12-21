@@ -1,5 +1,7 @@
 import 'package:electronic_shop/core/models/product_models.dart';
+import 'package:electronic_shop/core/services/cart_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetails extends StatefulWidget {
   Products? data;
@@ -11,12 +13,13 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  int value = 0;
+  final _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      key: _key,
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: ListView(
@@ -52,6 +55,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                   SizedBox(
                     height: 10,
                   ),
+                  Text('Category:${widget.data!.category![0]},${widget.data!.category![1]}', style: Theme.of(context).textTheme.headline4,),
+                  SizedBox(
+                    height: 10,
+                  ),
+
                   Text(
                     "Created At: ${widget.data!.date!.toString()}",
                     style: Theme.of(context).textTheme.headline4,
@@ -67,80 +75,31 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 50,
             ),
             Container(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Row(
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        GestureDetector(
+              padding: EdgeInsets.only(left:10, right:10, top: 20),
+              child: InkWell(
+                onTap: () {
+                  _key.currentState!.showSnackBar(SnackBar(
+                    content: Text('Added'),
+                  ));
+                  Provider.of<CartServices>(context, listen: false).getCartInformation(widget.data!.name!, widget.data!.price!, widget.data!.stockCount!);
 
-                          child: Text(
-                            '-',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                          onTap: (){
-                            setState(() {
-                              if(this.value>0)
-                                {
-                                  setState(() {
-                                    this.value--;
-                                  });
-                                }
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          width: width * 0.04,
-                        ),
-                        Text(
-                          value.toString(),
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                        SizedBox(
-                          width: width * 0.04,
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            if(this.value<widget.data!.stockCount!)
-                              {
-                                setState(() {
-                                  this.value++;
-                                });
-                              }
-                          },
-                          child: Text(
-                            '+',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ),
-                      ],
+
+                },
+                child: Ink(
+                  height: 40,
+                  width: width,
+                  color: Colors.red,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Add to Cart',
+                      style: Theme.of(context).textTheme.caption,
                     ),
                   ),
-                  SizedBox(
-                    width: width * 0.06,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      
-                    },
-                    child: Ink(
-                      width: width * 0.6,
-                      height: 40,
-                      color: Colors.red,
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Add to Cart',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                ),
               ),
             )
           ],
